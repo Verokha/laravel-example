@@ -43,10 +43,10 @@ class BookTest extends TestCase
 
     public function test_create_book_success(): void
     {
-        $requestData = ['title'=> 'Руслан и Людмила','description'=> 'Сказка'];
+        $requestData = ['title' => 'Руслан и Людмила', 'description' => 'Сказка'];
         $response = $this
             ->withHeader('Authorization', 'Bearer' . $this->token)
-            ->post('/api/books/create' , $requestData);
+            ->post('/api/books/create', $requestData);
         $response->assertStatus(201);
         $responseData = $response->json();
         $this->assertEquals(true, $responseData['success']);
@@ -54,22 +54,25 @@ class BookTest extends TestCase
 
     public function test_create_book_failed(): void
     {
-        $requestData = ['description'=> 'рассказ'];
+        $requestData = ['description' => 'рассказ'];
         $response = $this
             ->withHeader('Authorization', 'Bearer' . $this->token)
-            ->post('/api/books/create' , $requestData);
+            ->post('/api/books/create', $requestData);
         $response->assertStatus(422);
     }
-    
+
     public function test_book_show_success(): void
     {
         $book = Book::factory()
-            ->for($this->user)
-            ->create();
+            ->create([
+                'user_id' => $this->user->id
+            ]);
+
         $response = $this
             ->withHeader('Authorization', 'Bearer' . $this->token)
             ->get('/api/books/' . $book->id);
         $response->assertStatus(200);
+        $responseBook = $response->json();
+        $this->assertEquals($book->id, $responseBook['id']);
     }
-
 }

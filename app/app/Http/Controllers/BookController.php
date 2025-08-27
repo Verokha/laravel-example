@@ -39,4 +39,16 @@ class BookController
             ]);
         }
     }
+
+    public function show(Book $book)
+    {
+        if ($book->user_id !== $this->user->id) {
+
+            return response()->json([
+                'success' => false,
+            ], 403);
+        }
+
+        return response()->json($book, 200);
+    }
 }

@@ -15,4 +15,5 @@ Route::middleware([JwtMiddleware::class])->group(function () {
 
     Route::get('books', [BookController::class, 'index']);
     Route::post('books/create', [BookController::class, 'create']);
+    Route::get('books/{book}', [BookController::class, 'show']);
 });

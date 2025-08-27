@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,8 @@ class BookFactory extends Factory
     {
         return [
             'title' => $this->faker->title(),
-            'description' => $this->faker->text()
+            'description' => $this->faker->text(),
+            'user_id' => User::factory()
         ];
     }
 }
