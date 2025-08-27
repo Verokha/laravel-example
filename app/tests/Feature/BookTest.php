@@ -43,23 +43,33 @@ class BookTest extends TestCase
 
     public function test_create_book_success(): void
     {
-        //@todo
-        $requestData = [];
-        $this->token;
-        //1. Проверить фабрику
-        //2. Собрать валидацию
-        //3. Удостовериться в авторизации
-        //4. Вызвать апи
+        $requestData = ['title'=> 'Руслан и Людмила','description'=> 'Сказка'];
+        $response = $this
+            ->withHeader('Authorization', 'Bearer' . $this->token)
+            ->post('/api/books/create' , $requestData);
+        $response->assertStatus(201);
+        $responseData = $response->json();
+        $this->assertEquals(true, $responseData['success']);
     }
 
-    public function test_create_book_success(): void
+    public function test_create_book_failed(): void
     {
-        //@todo
-        $requestData = [];
-        $this->token;
-        //1. Проверить фабрику
-        //2. Собрать валидацию
-        //3. Удостовериться в авторизации
-        //4. Вызвать апи
+        $requestData = ['description'=> 'рассказ'];
+        $response = $this
+            ->withHeader('Authorization', 'Bearer' . $this->token)
+            ->post('/api/books/create' , $requestData);
+        $response->assertStatus(422);
     }
+    
+    public function test_book_show_success(): void
+    {
+        $book = Book::factory()
+            ->for($this->user)
+            ->create();
+        $response = $this
+            ->withHeader('Authorization', 'Bearer' . $this->token)
+            ->get('/api/books/' . $book->id);
+        $response->assertStatus(200);
+    }
+
 }
