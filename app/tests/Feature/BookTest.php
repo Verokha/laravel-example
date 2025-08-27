@@ -75,4 +75,15 @@ class BookTest extends TestCase
         $responseBook = $response->json();
         $this->assertEquals($book->id, $responseBook['id']);
     }
+
+    public function test_book_show_forbidden()
+    {
+        //403
+    }
+
+
+    public function test_book_show_not_found()
+    {
+        //404
+    }
 }
