@@ -51,4 +51,20 @@ class BookController
 
         return response()->json($book, 200);
     }
+
+    public function remove(Book $book)
+    {
+        if ($book->user_id !== $this->user->id) {
+
+            return response()->json([
+                'success' => false,
+            ], 403);
+        }
+
+        $book->delete();
+
+        return response()->json([
+            'success' => true
+        ], 200);
+    }
 }
