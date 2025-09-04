@@ -76,28 +76,53 @@ class BookTest extends TestCase
         $this->assertEquals($book->id, $responseBook['id']);
     }
 
-   public function test_book_show_forbidden(): void
-{
-    $otherUser = User::factory()->create();
-    $book = Book::factory()->create([
-        'user_id' => $otherUser->id
-    ]);
+    public function test_book_show_forbidden(): void
+    {
+        $otherUser = User::factory()->create();
+        $book = Book::factory()->create([
+            'user_id' => $otherUser->id
+        ]);
 
-    $response = $this
-        ->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->get('/api/books/' . $book->id);
+        $response = $this
+            ->withHeader('Authorization', 'Bearer ' . $this->token)
+            ->get('/api/books/' . $book->id);
 
-    $response->assertStatus(403);
-}
+        $response->assertStatus(403);
+    }
 
-   public function test_book_show_not_found(): void
-{
-    $nonExistingId = 999999;
+    public function test_book_show_not_found(): void
+    {
+        $nonExistingId = 999999;
 
-    $response = $this
-        ->withHeader('Authorization', 'Bearer ' . $this->token)
-        ->get('/api/books/' . $nonExistingId);
+        $response = $this
+            ->withHeader('Authorization', 'Bearer ' . $this->token)
+            ->get('/api/books/' . $nonExistingId);
 
-    $response->assertStatus(404);
-}
+        $response->assertStatus(404);
+    }
+    public function test_book_delete(): void
+    {
+        $book = Book::factory()->create([
+            'user_id' =>$this->user->id
+        ]);
+        $response = $this
+            ->withHeader('Authorization', 'Bearer ' . $this->token)
+            ->delete('/api/books/' . $book->id);
+
+        $response->assertStatus(200);
+        $responseData = $response->json();
+        $this->assertEquals(true, $responseData['success']);
+    }
+    public function test_book_forbidden_delete(): void
+    {
+        $otherUser = User::factory()->create();
+        $book = Book::factory()->create([
+            'user_id'=>$otherUser->id
+        ]);
+             $response = $this
+            ->withHeader('Authorization', 'Bearer ' . $this->token)
+            ->delete('/api/books/' . $book->id);
+
+        $response->assertStatus(403);
+    }
 }
