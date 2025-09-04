@@ -23,11 +23,7 @@ class BookTest extends TestCase
     public function test_book_index(): void
     {
         $countElements = 5;
-        Book::factory()
-            ->count($countElements)
-            ->create([
-                'user_id' => $this->user->id
-            ]);
+        $this->createBook($this->user->id, $countElements);
         $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->get('/api/books');
@@ -63,10 +59,7 @@ class BookTest extends TestCase
 
     public function test_book_show_success(): void
     {
-        $book = Book::factory()
-            ->create([
-                'user_id' => $this->user->id
-            ]);
+        $book = $this->createBook($this->user->id);
 
         $response = $this
             ->withHeader('Authorization', 'Bearer' . $this->token)
@@ -79,9 +72,7 @@ class BookTest extends TestCase
     public function test_book_show_forbidden(): void
     {
         $otherUser = User::factory()->create();
-        $book = Book::factory()->create([
-            'user_id' => $otherUser->id
-        ]);
+        $book = $this->createBook($otherUser->id);
 
         $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -102,9 +93,7 @@ class BookTest extends TestCase
     }
     public function test_book_delete(): void
     {
-        $book = Book::factory()->create([
-            'user_id' =>$this->user->id
-        ]);
+        $book = $this->createBook($this->user->id);
         $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->delete('/api/books/' . $book->id);
@@ -116,13 +105,23 @@ class BookTest extends TestCase
     public function test_book_forbidden_delete(): void
     {
         $otherUser = User::factory()->create();
-        $book = Book::factory()->create([
-            'user_id'=>$otherUser->id
-        ]);
+        $book = $this->createBook($otherUser->id);
              $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->delete('/api/books/' . $book->id);
 
         $response->assertStatus(403);
+    }
+
+    private function createBook(int $userId, int $count = 1)
+    {
+        if $count == 1{
+
+        };
+        return Book::factory()
+        ->count($count)
+        ->create([
+            'user_id' =>$userId
+        ]);
     }
 }
