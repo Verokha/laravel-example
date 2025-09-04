@@ -23,7 +23,7 @@ class BookTest extends TestCase
     public function test_book_index(): void
     {
         $countElements = 5;
-        $this->createBook($this->user->id, $countElements);
+        $test = $this->createBook($this->user->id, $countElements);
         $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->get('/api/books');
@@ -106,7 +106,7 @@ class BookTest extends TestCase
     {
         $otherUser = User::factory()->create();
         $book = $this->createBook($otherUser->id);
-             $response = $this
+        $response = $this
             ->withHeader('Authorization', 'Bearer ' . $this->token)
             ->delete('/api/books/' . $book->id);
 
@@ -115,13 +115,12 @@ class BookTest extends TestCase
 
     private function createBook(int $userId, int $count = 1)
     {
-        if $count == 1{
-
-        };
-        return Book::factory()
-        ->count($count)
-        ->create([
-            'user_id' =>$userId
+        $factory = Book::factory();
+        if ($count > 1) {
+            $factory = $factory->count($count);
+        }
+        return $factory->create([
+            'user_id' => $userId
         ]);
     }
 }
