@@ -52,7 +52,7 @@ class BookController
         return response()->json($book, 200);
     }
 
-    public function remove(Book $book)
+    public function delete(Book $book)
     {
         if ($book->user_id !== $this->user->id) {
 
