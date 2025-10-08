@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,7 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::post('books/create', [BookController::class, 'create']);
     Route::get('books/{book}', [BookController::class, 'show']);
     Route::delete('books/{book}', [BookController::class, 'delete']);
+
+
+    Route::post('cart', [CartController::class, 'addToCard']);
 });
