@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\User;
+use App\Models\Book;
 
 class DeliveryTests extends TestCase
 {
@@ -14,5 +14,6 @@ class DeliveryTests extends TestCase
         $response = $this
             ->post('api/login',['email'=>'ivan@mail.ru', 'password'=>'password']);
         $responseData = $response->json();
+        $newBook = Book::factory()->create();
     }
 }
