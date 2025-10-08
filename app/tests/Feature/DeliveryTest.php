@@ -15,5 +15,8 @@ class DeliveryTests extends TestCase
             ->post('api/login',['email'=>'ivan@mail.ru', 'password'=>'password']);
         $responseData = $response->json();
         $newBook = Book::factory()->create();
+        $response = $this
+              ->post('api/cart/' . $newBook->id, ['count'=>1]);
+        $this ->assertEquals(true, $responseData['success']);
     }
 }
