@@ -20,24 +20,27 @@ class AuthTest extends TestCase
 
         $response->assertStatus(200);
     }
-    public function test_create_user_success():void
+
+    public function test_create_user_success(): void
     {
         //$requestData = ['name'=> 'Ivan', 'email'=> 'ivan@mail.ru', 'password'=> '123pass'];
         $newUser = User::factory()->make();
         $response = $this
-            ->post('api/register',['name'=> $newUser->name, 'email'=> $newUser->email, 'password'=> $newUser->password]);
+            ->post('api/register', ['name' => $newUser->name, 'email' => $newUser->email, 'password' => $newUser->password]);
         $response->assertStatus(201);
         $response->assertJsonStructure(['user', 'token']);
     }
-    public function test_auth_user_success():void
+
+    public function test_auth_user_success(): void
     {
         $newUser = User::factory()->create();
         $response = $this
-            ->post('api/login',['email'=>$newUser->email, 'password'=>'password']);
+            ->post('api/login', ['email' => $newUser->email, 'password' => 'password']);
         $response->assertStatus(200);
         $response->assertJsonStructure(['token']);
     }
-    public function test_get_user():void 
+
+    public function test_get_user(): void
     {
         $newUser = User::factory()->create();
         $token = auth()->login($newUser);
@@ -46,7 +49,8 @@ class AuthTest extends TestCase
             ->get('api/user');
         $response->assertStatus(200);
     }
-    public function test_logout_user():void //проверка статуса и месседж
+
+    public function test_logout_user(): void //проверка статуса и месседж
     {
         $newUser = User::factory()->create();
         $token = auth()->login($newUser);
