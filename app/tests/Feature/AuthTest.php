@@ -37,24 +37,24 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonStructure(['token']);
     }
-    public function test_get_user():void //проверить данные по имени и почте тот ли юзер
+    public function test_get_user():void 
     {
         $newUser = User::factory()->create();
+        $token = auth()->login($newUser);
         $response = $this
-            ->get('api/user',['email'=>$newUser->email, 'password'=>'password']);
+            ->withHeader('Authorization', 'Bearer ' . $token)
+            ->get('api/user');
         $response->assertStatus(200);
     }
     public function test_logout_user():void //проверка статуса и месседж
     {
         $newUser = User::factory()->create();
+        $token = auth()->login($newUser);
         $response = $this
-            ->post('api/login',['email'=>$newUser->email, 'password'=>'password']);
+            ->withHeader('Authorization', 'Bearer ' . $token)
+            ->post('api/logout');
         $response->assertStatus(200);
-        $response = $this
-            ->post('api/logout',['email'=>$newUser->email, 'password'=>'password']);
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['message']); //или через $responseData = ['message'=> 'такой то'];
-
+        $responseData = $response->json();
+        $this->assertEquals('Successfully logged out', $responseData['message']);
     }
-    
 }
