@@ -21,4 +21,5 @@ Route::middleware([JwtMiddleware::class])->group(function () {
 
 
     Route::post('cart/{book}', [CartController::class, 'addToCard']);
+    Route::get('/cart', [CartController::class, 'cart']);
 });

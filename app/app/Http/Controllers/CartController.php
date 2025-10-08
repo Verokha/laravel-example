@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Cart;
 
 class CartController
 {
@@ -16,5 +17,13 @@ class CartController
         return response()->json([
             'success' => true
         ]);
+    }
+
+    public function cart()
+    {
+        $responseData = Cart::where('user_id', request()->user()->id)
+            ->get();
+
+        return response()->json($responseData);
     }
 }
