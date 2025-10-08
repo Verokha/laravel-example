@@ -20,5 +20,5 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::delete('books/{book}', [BookController::class, 'delete']);
 
 
-    Route::post('cart', [CartController::class, 'addToCard']);
+    Route::post('cart/{book}', [CartController::class, 'addToCard']);
 });
