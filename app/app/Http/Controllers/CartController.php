@@ -14,6 +14,11 @@ class CartController
                 'success' => false
             ], 403);
         }
+        $card = new Cart();
+        $card->user_id = request()->user()->id;
+        $card->book_id = $book->id;
+        $card->count = request()->get('count');
+        $card->save();
         return response()->json([
             'success' => true
         ]);
