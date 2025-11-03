@@ -20,7 +20,7 @@ class DeliveryTest extends TestCase
             ->post('api/cart/' . $newBook->id, ['count'=>1]);
         $responseDataAddToCart = $response->json();
         $this->assertEquals(true, $responseDataAddToCart['success']);
-        $this 
+        $response = $this 
             ->withHeader('Authorization', 'Bearer ' . $responseData['token'])
             ->get('api/cart');
         $responseDataCart = $response->json(); 
